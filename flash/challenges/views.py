@@ -1,5 +1,21 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.urls import reverse
+monthly_challenges =  {
+    "january": "Writing exercises for January",
+    "february": "Writing exercise for Ferbuary",
+    "march": "Writing exercise for March",
+    "april": "Writing exercise for April",
+    "may":"Writing exercise for Mary", 
+    "june":"Writing exercise for June",
+    "july":"Writing exercise for July",
+    "august":"Writing exercise for August", 
+    "september":"Writing exercise for September",
+    "october":"Writing exercise for October",
+    "november":"Writing exercise for November", 
+    "december":"Writing exercise for December"
+    
+}
 
 # Create your views here.
 
@@ -7,21 +23,23 @@ def index(request):
     return HttpResponse("A year of writing exercises")
 
 def challenge_by_number(request, month):
-    return HttpResponse(month)
+    months = list(monthly_challenges.keys())
+    
+    if month > len(months):
+            return HttpResponseNotFound("Invalid month")
+    else:
+        redirect_month = months[month - 1]
+        redirect_path = reverse("month-challenge", args=[redirect_month]) #builds path that lloks like this: /challenge/<redirect_month>, which is why we use args = redirect_month as the second parameter
+        return HttpResponseRedirect(redirect_path)
     
 
 def monthly_challenge(request, month):
-    challenge_text = None
-    if month == 'january':
-        challenge_text = 'Writing exercise for January'
-    elif month == 'february':
-        challenge_text='Writing exercise for February'
-    elif month == 'march':
-        challenge_text='Writing exercise for March'
-    else:
+    try:
+        challenge_text = monthly_challenges[month]
+        return HttpResponse(challenge_text)
+    except:
         return HttpResponseNotFound ('This month is not supported')
     
-    return HttpResponse(challenge_text)
     
 
 # def first(request):
