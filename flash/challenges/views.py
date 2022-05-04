@@ -19,14 +19,22 @@ monthly_challenges =  {
 
 # Create your views here.
 
-def index(request):
-    return HttpResponse("A year of writing exercises")
+def index(request): 
+    list_items = ""
+    months = list(monthly_challenges.keys())
+    for month in months:
+        capitalized_month = month.capitalize()
+        month_path = reverse("month-challenge", args=[month])
+        list_items += f"<li><a href = \"{month_path}\"> {capitalized_month}</a></li>"
+    #side-by-side list items, now we wrap them in unordered list:
+    response_data = f"<ul>{list_items}</ul>"
+    return HttpResponse(response_data)
 
 def challenge_by_number(request, month):
     months = list(monthly_challenges.keys())
     
     if month > len(months):
-            return HttpResponseNotFound("Invalid month")
+            return HttpResponseNotFound("<h1>Invalid month</h1>")
     else:
         redirect_month = months[month - 1]
         redirect_path = reverse("month-challenge", args=[redirect_month]) #builds path that lloks like this: /challenge/<redirect_month>, which is why we use args = redirect_month as the second parameter
@@ -36,46 +44,9 @@ def challenge_by_number(request, month):
 def monthly_challenge(request, month):
     try:
         challenge_text = monthly_challenges[month]
-        return HttpResponse(challenge_text)
+        response_data = f"<h1>{challenge_text}</h1>"
+        return HttpResponse(response_data)
     except:
-        return HttpResponseNotFound ('This month is not supported')
+        return HttpResponseNotFound ('<h1>This month is not supported</h1>')
     
-    
-
-# def first(request):
-#     return HttpResponse("Writing exercise for January!")
-
-# def second(request):
-#     return HttpResponse("Writing exercise for February!")
-
-# def third(request):
-#     return HttpResponse("Writing exercise for March!")
-
-# def fourth(request):
-#     return HttpResponse("Writing exercise for April!")
-
-# def fifth(request):
-#     return HttpResponse("Writing exercise for May!")
-
-# def sixth(request):
-#     return HttpResponse("Writing exercise for June!")
-
-# def seventh(request):
-#     return HttpResponse("Writing exercise for July!")
-
-# def eighth (request):
-#     return HttpResponse("Writing exercise for August!")
-
-# def ninth(request):
-#     return HttpResponse("Writing exercise for September!")
-
-# def tenth(request):
-#     return HttpResponse("Writing exercise for October!")
-
-# def eleventh(request):
-#     return HttpResponse("Writing exercise for November!")
-
-# def twelfth(request):
-#     return HttpResponse("Writing exercise for December!")
-
-
+ 
