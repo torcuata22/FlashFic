@@ -1,13 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,700&display=swap');
-html {
-    font-family: 'Roboto Mono', monospace;
-
-}
-
-body {
-    margin: 0;
-}
-
 header {
     width: 100%;
     height: 5rem;

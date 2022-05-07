@@ -48,5 +48,3 @@ def monthly_challenge(request, month):
         })
     except:
          raise Http404()
-    
- 
